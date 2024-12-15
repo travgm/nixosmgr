@@ -1,0 +1,10 @@
+(library
+ (name nixosmgr)
+ (public_name nixosmgr)
+ (libraries
+  base
+  core
+  core_unix.command_unix
+  cmdliner)
+ (preprocess
+  (pps ppx_jane)))
