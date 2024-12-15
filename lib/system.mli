@@ -1,6 +1,7 @@
 type commands =
     | Clean
     | Optimise
+    | Usage
     | Rebuild of string
     | Package of string * string
 

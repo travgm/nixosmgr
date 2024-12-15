@@ -4,6 +4,7 @@ open Unix
 type commands =
   | Clean
   | Optimise
+  | Usage
   | Rebuild of string
   | Package of string * string
 
@@ -16,6 +17,7 @@ let cmd_success status =
 let command_to_s = function
   | Clean -> [ "nix-collect-garbage"; "nix-collect-garbage -d"; "rm -rf ~/.cache/nix" ]
   | Optimise -> [ "nix-store --optimise" ]
+  | Usage -> [ "nix path-info -Sh /run/current-system" ]
   | Rebuild config -> [ "sudo nixos-rebuild switch -I nixos-config=" ^ config ]
   | Package (_, _) -> []
 ;;

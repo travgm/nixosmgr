@@ -34,7 +34,7 @@ module AddPackage : PackageManager = struct
     let insert_pkg = get_package_index lines in
     match insert_pkg with
     | Some 0 ->
-      print_endline "No user package found";
+      Nix_printer.error_message "No user package found";
       None
     | Some x ->
       let beg, tail = List.split_n lines x in
@@ -42,7 +42,7 @@ module AddPackage : PackageManager = struct
       Out_channel.write_lines config new_lines;
       Some x
     | None ->
-      print_endline "Failed to find package index";
+      Nix_printer.error_message "Failed to find package index";
       None
   ;;
 
