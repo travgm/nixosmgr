@@ -31,7 +31,7 @@ let create_command_list { arg_clean; arg_optimise; arg_usage; arg_rebuild; arg_p
 ;;
 
 let arg_clean =
-  let doc = "Clean the system" in
+  let doc = "Clean the system (Note: This also runs rm -rf ~/.cache/nix)" in
   Arg.(value & flag & info [ "c"; "clean" ] ~doc)
 ;;
 
