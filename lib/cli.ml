@@ -7,16 +7,22 @@ type arg_commands =
   ; arg_package : string option
   }
 
-let version = "1.0.0"
+let version = "nix-mgr 1.0.0"
+
+let get_config () =
+  match Sys.getenv_opt "NIXMGR_CONFIG" with
+  | Some v -> v
+  | None -> Nix_printer.error_message "NIXMGR_CONFIG not set to configuration.nix path";
+            exit 1
 
 let create_command_list { arg_clean; arg_optimise; arg_rebuild; arg_package } =
   let commands = [] in
   let commands = if arg_clean then System.Clean :: commands else commands in
   let commands = if arg_optimise then System.Optimise :: commands else commands in
-  let commands = if arg_rebuild then System.Rebuild "switch" :: commands else commands in
+  let commands = if arg_rebuild then System.Rebuild (get_config ()) :: commands else commands in
   let commands =
     match arg_package with
-    | Some pkg -> System.Package (pkg, "user") :: commands
+    | Some pkg -> System.Package (get_config (), pkg) :: commands
     | None -> commands
   in
   List.rev commands
