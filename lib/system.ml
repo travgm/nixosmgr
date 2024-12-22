@@ -26,10 +26,12 @@ let process_commands (cmd : commands list) =
   let run_command cmd =
     match cmd with
     | Package (config, package) ->
-      let _ = Nix_printer.running_message ("Adding package " ^ package ^ " to " ^ config);
-              ignore (Add_package.AddPackage.add_package ~config package);
-              Nix_printer.success_message "Finished running command!" in
-              ()
+      let _ =
+        Nix_printer.running_message ("Adding package " ^ package ^ " to " ^ config);
+        ignore (Add_package.AddPackage.add_package ~config package);
+        Nix_printer.success_message "Finished running command!"
+      in
+      ()
     | cmd ->
       let cmd_s = String.concat ~sep:" && " (command_to_s cmd) in
       Nix_printer.running_message cmd_s;

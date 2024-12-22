@@ -13,15 +13,19 @@ let version = "nix-mgr 1.0.0"
 let get_config () =
   match Sys.getenv_opt "NIXMGR_CONFIG" with
   | Some v -> v
-  | None -> Nix_printer.error_message "NIXMGR_CONFIG not set to configuration.nix path";
-            exit 1
+  | None ->
+    Nix_printer.error_message "NIXMGR_CONFIG not set to configuration.nix path";
+    exit 1
+;;
 
 let create_command_list { arg_clean; arg_optimise; arg_usage; arg_rebuild; arg_package } =
   let commands = [] in
   let commands = if arg_clean then System.Clean :: commands else commands in
   let commands = if arg_optimise then System.Optimise :: commands else commands in
   let commands = if arg_usage then System.Usage :: commands else commands in
-  let commands = if arg_rebuild then System.Rebuild (get_config ()) :: commands else commands in
+  let commands =
+    if arg_rebuild then System.Rebuild (get_config ()) :: commands else commands
+  in
   let commands =
     match arg_package with
     | Some pkg -> System.Package (get_config (), pkg) :: commands
@@ -70,7 +74,13 @@ let cmd =
   Cmd.v
     info
     Term.(
-      ret (const make_commands $ arg_clean $ arg_optimise $ arg_usage $ arg_rebuild $ arg_package))
+      ret
+        (const make_commands
+         $ arg_clean
+         $ arg_optimise
+         $ arg_usage
+         $ arg_rebuild
+         $ arg_package))
 ;;
 
 let run = Cmd.eval cmd

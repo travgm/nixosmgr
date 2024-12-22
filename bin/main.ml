@@ -1,3 +1,3 @@
 open Nixosmgr
 
-let () = exit (Cli.run);;
+let () = exit Cli.run
